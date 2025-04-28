@@ -50,18 +50,18 @@ def play_quiz():
     topic = input("Enter a topic for your quiz: ")
     points = 0
     num_questions = 10
-    seen_questions = set()
+    seen_correct_answers = set()
 
     i = 0
     while i < num_questions:
         question, correct_answer, options = generate_question(topic)
 
-        if question in seen_questions:
+        if correct_answer in seen_correct_answers:
             #already seen, skip and try again
             print("Duplicate question detected. Generating a new one...")
             continue
 
-        seen_questions.add(question)
+        seen_correct_answers.add(correct_answer)
         print(f"\nQuestion {i+1} of {num_questions}:")
         print(question)
         for idx, option in enumerate(options):
@@ -83,7 +83,7 @@ def play_quiz():
 
         i += 1;
 
-    print(f"\n Game Over! You scored {points}/{num_questions} points.")
+    print(f"\n Game Over! You scored {points} points of {num_questions} possible.")
 
 if __name__ == "__main__":
     load_api_key()
