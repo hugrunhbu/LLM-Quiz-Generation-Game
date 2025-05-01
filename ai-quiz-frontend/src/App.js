@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import GeneratingScreen from "./components/GeneratingScreen";
 import HomeScreen from "./components/HomeScreen";
 import QuizScreen from "./components/QuizScreen";
+import Results from "./components/Results";
 
 function App() {
   const [topic, setTopic] = useState("");
@@ -79,20 +80,14 @@ function App() {
     }
     if (showScore) {
       return (
-        <div style={{ padding: "20px" }}>
-          <h1>Quiz Complete!</h1>
-          <p>
-            Your score: {score}/{questions.length}
-          </p>
-          <button
-            onClick={() => {
-              setQuestions([]);
-              setPhase("home");
-            }}
-          >
-            Play Again
-          </button>
-        </div>
+        <Results
+          score={score}
+          total={questions.length}
+          onRestart={() => {
+            setQuestions([]);
+            setPhase("home");
+          }}
+        />
       );
     }
 
