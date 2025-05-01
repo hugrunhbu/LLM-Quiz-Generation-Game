@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import GeneratingScreen from "./components/GeneratingScreen";
+import HomeScreen from "./components/HomeScreen";
+import QuizScreen from "./components/QuizScreen";
 
 function App() {
   const [topic, setTopic] = useState("");
@@ -63,19 +65,11 @@ function App() {
 
   if (phase === "home") {
     return (
-      <div style={{ padding: "20px" }}>
-        <h1>Welcome to the AI Quiz Game</h1>
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            value={topic}
-            onChange={(e) => setTopic(e.target.value)}
-            placeholder="Enter a topic"
-            required
-          />
-          <button type="submit">Start Quiz</button>
-        </form>
-      </div>
+      <HomeScreen
+        topic={topic}
+        setTopic={setTopic}
+        handleSubmit={handleSubmit}
+      />
     );
   }
 
@@ -105,21 +99,12 @@ function App() {
     const q = questions[current];
 
     return (
-      <div style={{ padding: "20px" }}>
-        <h2>
-          Question {current + 1} of {questions.length}
-        </h2>
-        <p>{q.question}</p>
-        {q.options.map((opt, i) => (
-          <button
-            key={i}
-            onClick={() => handleAnswer(opt)}
-            style={{ display: "block", margin: "8px 0" }}
-          >
-            {opt}
-          </button>
-        ))}
-      </div>
+      <QuizScreen
+        question={q}
+        current={current}
+        total={questions.length}
+        handleAnswer={handleAnswer}
+      />
     );
   }
 }

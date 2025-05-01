@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS
 import random
 import requests
+import re
 
 app = Flask(__name__)
 CORS(app)
@@ -13,7 +14,7 @@ MODEL_NAME = "llama3.2"
 def generate_quiz():
     data = request.json
     topic = data.get("topic", "general knowledge")
-    num_questions = data.get("numQuestions", 10)
+    num_questions = data.get("numQuestions", 12)
 
     prompt = f"""You are an AI quiz generator.
 
@@ -49,31 +50,21 @@ def generate_quiz():
     print(content)
     print("\n----------------------\n")
     
-    # Split by double newlines into each question block
-    blocks = content.strip().split('\n\n')
+    pattern = r"Question:(.*?)\n+Correct:(.*?)\n+Wrong:(.*?)\n+"
+    matches = re.findall(pattern, content, re.DOTALL)
 
     questions = []
-    for block in blocks:
-        lines = [line.strip() for line in block.strip().split('\n') if line.strip()]
-
-        question_text = None
-        correct_answer = None
-        wrong_answers = []
-
-        for line in lines:
-            if line.startswith("Question:"):
-                question_text = line.replace("Questions:", "").strip()
-            elif line.startswith("Correct:"):
-                correct_answer = line.replace("Correct:", "").strip()
-            elif line.startswith("Wrong:"):
-                wrong_answers = [w.strip() for w in line.replace("Wrong:", "").split(',')]
+    for q_text, correct, wrongs in matches:
+        question_text = q_text.strip()
+        correct_answer = correct.strip()
+        wrong_answers = [w.strip() for w in wrongs.split(',')]
 
         if question_text and correct_answer and len(wrong_answers) == 3:
             all_answers = wrong_answers + [correct_answer]
             random.shuffle(all_answers)
             questions.append({
-                "question": question_text, 
-                "correct": correct_answer, 
+                "question": question_text,
+                "correct": correct_answer,
                 "options": all_answers
             })
 
