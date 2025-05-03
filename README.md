@@ -5,6 +5,8 @@ An interactive quiz game where you ask the LLM to create quizzes on a specific t
 
 pip install -r requirements.txt
 
+NOTE: there is a different README inside the ai-quiz-frontend folder
+
 # DIRECTIONS (3 different terminals)
 
 Terminal 1: Ollama Model
@@ -18,3 +20,15 @@ Port: 5000
 Terminal 3: React App
 Command: npm start
 Port: 3000
+
+# features
+
+- AI generated multiple choice quiz questions based on any topic
+- clean and friendly UI
+- Real time feedback
+- live multiplayer mode is in progress
+
+# Tech Stack
+
+Front End: React, HTML/CSS, JS, Socket.IO
+Back End: Flask + Flask-SocketIO, Python, Ollama LLM API
